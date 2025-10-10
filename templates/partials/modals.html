@@ -1,0 +1,58 @@
+{% load static %}
+<!-- Modal search -->
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+
+                <form class="d-flex position-relative form-control rounded-pill" role="search">
+                    <input class="ms-4 w-100 border border-0 search" type="search" placeholder="Tìm kiếm sản phẩm . . . . "
+                    aria-label="Search" />
+                    <button class="border-0 bg-transparent rounded-pill position-absolute top-0 start-0 ms-2 mt-1"
+                    type="submit"><i class="bi bi-search fw-bold fs-5 search-icon"></i></button>
+                </form>   
+                <div class="mt-3">
+                    Tim kiem hien thi o day
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal search -->
+<div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            
+            <div class="modal-header bg-info-subtle text-primary">
+                <h1 class="modal-title fs-5" id="cartModalLabel">
+                    {% if cart and request.user.is_authenticated %} 
+                        Giỏ hàng của {{ user.username }}
+                    {% else %}
+                        Giỏ hàng của bạn đang trống
+                    {% endif %}
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% if cart %}
+                    Giỏ hàng hiển thị ở đây
+                {% else %}
+                    <div class="modal-body text-center">
+                        <p class="mb-4">Hãy thêm sản phẩm vào giỏ hàng để tiến hành thanh toán</p>
+                        <i class="bi bi-cart4 text-info" style="font-size: 14rem;"></i>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="modal-footer">
+                {% if cart %}
+                    <a href="{% url 'cart' %}" class="btn btn-primary">Xem giỏ hàng</a>
+                    <a href="{% url 'checkout' %}" class="btn btn-success">Thanh toán</a>
+                {% else %}
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
