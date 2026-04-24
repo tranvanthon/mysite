@@ -240,6 +240,32 @@ button:hover .search-icon {
     text-align: center;
 }
 
+/* CSS */
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -1px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s linear;
+    display: block !important; /* Quan trọng: giữ display block */
+}
+
+.dropdown-submenu:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Xóa class show nếu có */
+.dropdown-submenu .dropdown-menu.show {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+}
 /* Tablet: chỉnh lại caption */
 
 @media (max-width: 991px) {

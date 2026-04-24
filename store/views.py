@@ -9,6 +9,11 @@ from django.urls import reverse_lazy, reverse
 
 class HomeView(TemplateView):
     template_name = "store/index.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["categories"] = Category.objects.filter(parent__isnull=True)
+        return context
+    
 
 
 class StaffDashboardView(TemplateView):
@@ -46,9 +51,26 @@ class CategoryUpdateView(LoginRequiredMixin, UpdateView):
 
 class CategoryListView(ListView):
     model = Category
+    context_object_name = "grouped_categories"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        root_categories = Category.objects.filter(parent__isnull=True)
+        grouped_data = []
+
+        for root_cat in root_categories:
+            groups = root_cat.get_grouped_products()
+            if groups:
+                grouped_data.append(
+                    {
+                        "main_category": root_cat,
+                        "groups": groups,
+                    }
+                )
+            else:
+                print(f"passing {root_cat.name} because groups is not exists!")
+
+        context["grouped_categories"] = grouped_data
         context["title"] = "Category list"
         return context
 

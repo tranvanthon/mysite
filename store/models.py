@@ -57,7 +57,6 @@ class Category(models.Model):
         """Lay list ID cua all descendants (de fielter Product)"""
         return [cat.id for cat in self.get_descendants(include_self=True)]
 
-
     def get_grouped_products(self):
         """Lấy sản phẩm theo nhóm danh mục CON, bao gồm cả chính nó"""
         if self.children.exists():
@@ -123,7 +122,7 @@ class Product(models.Model):
     # Thông tin cơ bản
     name = models.CharField(max_length=255)
     category = models.ForeignKey(
-        Category, on_delete=models.PROTECT, related_name="category"
+        Category, on_delete=models.PROTECT, related_name="products"
     )
     slug = models.SlugField(unique=True, blank=True)
     # Mô tả sản phẩm
@@ -135,7 +134,9 @@ class Product(models.Model):
         max_digits=10, decimal_places=2, verbose_name="Import prcie", default=2.00
     )
     sku = models.CharField(max_length=100, unique=True, verbose_name="Code SKU")
-    barcode = models.CharField(max_length=100, blank=True, verbose_name="Barcode", db_index=True)
+    barcode = models.CharField(
+        max_length=100, blank=True, verbose_name="Barcode", db_index=True
+    )
 
     # Quản lý tồn kho
     stock = models.PositiveIntegerField(default=0, verbose_name="Stock")

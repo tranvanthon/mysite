@@ -64,35 +64,23 @@
     <div class="collapse navbar-collapse grid justify-content-between" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item navbar-vertical dropdown">
-          <a class="nav-link active dropdown-toggle bg-primary text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Danh mục sản phẩm</a>
+          <!-- Bỏ data-bs-toggle, dùng hover -->
+          <a class="nav-link active dropdown-toggle bg-primary text-white" href="#">Danh mục sản phẩm</a>
           <ul class="dropdown-menu">
-            <!-- Sub menu cấp 2 -->
-            <li class="dropdown-submenu">
-              <a href="#" class="dropdown-item dropdown-toggle">Văn phòng phẩm</a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a href="#" class="dropdown-item">Bút dsafdadfsaf fasfdsa</a>
-                </li>
-                <li>
-                  <a href="#" class="dropdown-item">Giấy</a>
-                </li>
-                <li>
-                  <a href="#" class="dropdown-item">Sổ</a>
-                </li>
-                <li>
-                  <a href="#" class="dropdown-item">Kẹp</a>
-                </li>
-                <li>
-                  <a href="#" class="dropdown-item">Hồ sơ</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a href="#" class="dropdown-item">Thiết bị văn phòng</a>
-            </li>
-            <li>
-              <a href="#" class="dropdown-item">Đồ dùng học tập</a>
-            </li>
+            {% for category in categories %}
+              <li class="dropdown-submenu dropend">
+                <a href="#" class="dropdown-item dropdown-toggle">{{ category.name }}</a>
+                {% if category.children.all %}
+                  <ul class="dropdown-menu">
+                    {% for child in category.children.all %}
+                      <li>
+                        <a href="#" class="dropdown-item">{{ child.name }}</a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              </li>
+            {% endfor %}
           </ul>
         </li>
         <li class="nav-item navbar-vertical">
