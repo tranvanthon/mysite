@@ -1,0 +1,35 @@
+<!-- templates/dashboard/staff_dashboard.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="dashboard">
+    <h1>Xin chào, {{ user.username }}</h1>
+
+    <!-- Quick actions - Nổi bật nhất -->
+    <div class="quick-actions">
+      <h2>Thao tác nhanh</h2>
+      <div class="action-buttons">
+        <a href="" class="btn btn-primary btn-lg">➕ Thêm sản phẩm mới</a>
+        <a href="{% url 'store:category_create' %}" class="btn btn-secondary">📁 Add category</a>
+
+        {% for category in categories %}
+          <a href="{% url 'store:category_edit' category.slug %}" class="btn btn-secondary">📁 Add category</a>
+        {% endfor %}
+
+        <a href="#" class="btn btn-info">🛒 Xem đơn hàng</a>
+      </div>
+    </div>
+
+    <!-- Thống kê nhanh -->
+    <div class="stats">
+      <div class="stat-card">
+        <h3>Tổng sản phẩm</h3>
+        <p>{{ total_products }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>Tồn kho thấp</h3>
+        <p>{{ low_stock_count }}</p>
+      </div>
+    </div>
+  </div>
+{% endblock %}

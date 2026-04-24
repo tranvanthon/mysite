@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="d-flex justify-content-center align-items-center min-h-100">
+    <form action="{% url 'store:category_create' %}" method="post">
+      {{ title }}
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="{{ title }}" />
+    </form>
+  </div>
+{% endblock %}

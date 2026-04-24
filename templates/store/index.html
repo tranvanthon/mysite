@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block navbar %}
+  {% include 'partials/navbar.html' %}
+{% endblock %}
+
+{% block content %}
+  <div class="bg-yellow">
+    <div class="container-fluid p-5">
+      {% include 'partials/carousel.html' %}
+    </div>
+  </div>
+
+  <div class="category-wrap">
+    <div class="category-tilte">
+      <h1 class="text-primary my-3 d-inline-flex justify-content-center"><span class="section-title">DANH MỤC SẢN PHẨM</span></h1>
+    </div>
+    <p></p>
+  </div>
+  <div class="row">
+    <div class="sidebar col-2">
+      {% include 'partials/sidebar.html' %}
+    </div>
+  </div>
+{% endblock %}

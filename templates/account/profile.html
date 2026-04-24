@@ -1,0 +1,562 @@
+{% extends 'base.html' %}
+
+{% block navbar %}
+  {% include 'partials/navbar.html' %}
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+     
+        .profile-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .profile-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .profile-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 3rem;
+            color: white;
+            position: relative;
+        }
+        
+        .avatar-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .avatar-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            object-fit: cover;
+            background: white;
+        }
+        
+        .avatar-upload-btn {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .avatar-upload-btn:hover {
+            transform: scale(1.1);
+            background: #667eea;
+            color: white;
+        }
+        
+        .role-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+        
+        .role-admin { background: #dc3545; color: white; }
+        .role-staff { background: #ffc107; color: #000; }
+        .role-customer { background: #28a745; color: white; }
+        
+        .info-section {
+            padding: 2rem;
+        }
+        
+        .info-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 1.5rem;
+            height: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .info-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        .info-icon i {
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .info-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            color: #6c757d;
+            margin-bottom: 0.5rem;
+        }
+        
+        .info-value {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #2c3e50;
+            word-break: break-word;
+        }
+        
+        .edit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .edit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .modal-content {
+            border-radius: 20px;
+        }
+        
+        .form-control, .form-select {
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            padding: 0.75rem 1rem;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        
+        @media (max-width: 768px) {
+            .profile-header {
+                padding: 2rem;
+                text-align: center;
+            }
+            
+            .avatar-img {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .info-section {
+                padding: 1.5rem;
+            }
+        }
+        
+        .alert {
+            border-radius: 15px;
+            border: none;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: white;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #2c3e50;
+            transition: all 0.3s ease;
+        }
+        
+        .social-link:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+    </style>
+   <div class="container profile-container">
+
+        <div class="profile-card">
+            <!-- Header Section -->
+            <div class="profile-header">
+                <div class="row align-items-center">
+                    <div class="col-md-3 text-center text-md-start">
+                        <div class="avatar-wrapper">
+                                <img src="{{ user.profile.display_avatar }}" alt="Avatar" class="avatar-img" id="avatarPreview">
+                            <label for="avatarUpload" class="avatar-upload-btn">
+                                <i class="fas fa-camera"></i>
+                            </label>
+                            <form id="avatarForm" method="post" enctype="multipart/form-data" style="display: none;">
+                                {% csrf_token %}
+                                <input type="file" name="avatar" id="avatarUpload" accept="image/*">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-md-9 text-center text-md-start">
+                        <h2 class="mb-2">{{ user.get_full_name }}</h2>
+                        <p class="mb-2">
+                            <i class="fas fa-envelope me-2"></i>{{ user.email }}
+                        </p>
+                        <span class="role-badge role-{{ user.role }}">
+                            <i class="fas fa-user-tag me-1"></i>
+                            {{ user.get_role_display }}
+                        </span>
+                        <p class="mt-3 mb-0">
+                            <small>
+                                <i class="fas fa-calendar-alt me-1"></i>
+                                Tham gia: {{ user.date_joined|date:"d/m/Y" }}
+                            </small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Info Sections -->
+            <div class="info-section">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="mb-0">
+                        <i class="fas fa-user-circle me-2" style="color: #667eea;"></i>
+                        Thông tin cá nhân
+                    </h4>
+                    <button class="btn edit-btn text-white" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                        <i class="fas fa-edit me-2"></i>Chỉnh sửa hồ sơ
+                    </button>
+            
+                </div>
+                
+                <div class="row g-4">
+                    <!-- Thông tin cơ bản -->
+                    <div class="col-md-6">
+                        <div class="info-card">
+                            <div class="info-icon">
+                                <i class="fas fa-id-card"></i>
+                            </div>
+                            <div class="info-label">Thông tin cơ bản</div>
+                            <div class="info-value mb-2">
+                                <strong>Họ tên:</strong> {{ user.name|default:"Chưa cập nhật" }}
+                            </div>
+                            <div class="info-value mb-2">
+                                <strong>Email:</strong> {{ user.email }}
+                            </div>
+                            <div class="info-value mb-2">
+                                <strong>Vai trò:</strong> {{ user.get_role_display }}
+                            </div>
+                            <div class="info-value">
+                                <strong>Ngày tham gia:</strong> {{ user.date_joined|date:"d/m/Y H:i" }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Liên hệ -->
+                    <div class="col-md-6">
+                        <div class="info-card">
+                            <div class="info-icon">
+                                <i class="fas fa-address-book"></i>
+                            </div>
+                            <div class="info-label">Liên hệ</div>
+                            <div class="info-value mb-2">
+                                <strong><i class="fas fa-phone me-2"></i>Điện thoại:</strong> 
+                                {{ user.profile.phone|default:"Chưa cập nhật" }}
+                            </div>
+                            <div class="info-value mb-2">
+                                <strong><i class="fas fa-map-marker-alt me-2"></i>Địa chỉ:</strong> 
+                                {{ user.profile.address|default:"Chưa cập nhật" }}
+                            </div>
+                            <div class="info-value mb-2">
+                                <strong><i class="fas fa-location-dot me-2"></i>Vị trí:</strong> 
+                                {{ user.profile.location|default:"Chưa cập nhật" }}
+                            </div>
+                            <div class="info-value">
+                                <strong><i class="fas fa-globe me-2"></i>Website:</strong> 
+                                {% if user.profile.url %}
+                                    <a href="{{ user.profile.url }}" target="_blank">{{ user.profile.url }}</a>
+                                {% else %}
+                                    Chưa cập nhật
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Thông tin cá nhân -->
+                    <div class="col-md-6">
+                        <div class="info-card">
+                            <div class="info-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="info-label">Thông tin cá nhân</div>
+                            <div class="info-value mb-2">
+                                <strong><i class="fas fa-venus-mars me-2"></i>Giới tính:</strong> 
+                                {{ user.profile.get_sex_display|default:"Chưa cập nhật" }}
+                            </div>
+                            <div class="info-value mb-2">
+                                <strong><i class="fas fa-cake-candles me-2"></i>Ngày sinh:</strong> 
+                                {{ user.profile.birthday|date:"d/m/Y"|default:"Chưa cập nhật" }}
+                            </div>
+                            <div class="info-value">
+                                <strong><i class="fas fa-building me-2"></i>Công ty:</strong> 
+                                {{ user.profile.company|default:"Chưa cập nhật" }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Thống kê -->
+                    <div class="col-md-6">
+                        <div class="info-card">
+                            <div class="info-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="info-label">Hoạt động</div>
+                            <div class="row mt-3">
+                                <div class="col-6">
+                                    <div class="stat-card">
+                                        <div class="stat-number">{{ user.last_login|date:"d/m/Y"|default:"Chưa" }}</div>
+                                        <div class="info-label mt-2">Lần đăng nhập cuối</div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="stat-card">
+                                        <div class="stat-number">
+                                            {% if user.is_active %}
+                                                <span class="text-success"><i class="fas fa-check-circle"></i></span>
+                                            {% else %}
+                                                <span class="text-danger"><i class="fas fa-times-circle"></i></span>
+                                            {% endif %}
+                                        </div>
+                                        <div class="info-label mt-2">Trạng thái</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Edit Profile Modal -->
+    <div class="modal fade" id="editProfileModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-edit me-2"></i>Chỉnh sửa hồ sơ
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form method="post" action="{% url 'edit_profile' %}" id="profileForm">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Họ tên</label>
+                                <input type="text" class="form-control" name="name" value="{{ user.name }}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" value="{{ user.email }}" disabled>
+                                <small class="text-muted">Email không thể thay đổi</small>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Số điện thoại</label>
+                                <input type="tel" class="form-control" name="phone" value="{{ user.profile.phone|default:'' }}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Giới tính</label>
+                                <select class="form-select" name="sex">
+                                    <option value="M" {% if user.profile.sex == 'M' %}selected{% endif %}>Nam</option>
+                                    <option value="F" {% if user.profile.sex == 'F' %}selected{% endif %}>Nữ</option>
+                                    <option value="O" {% if user.profile.sex == 'O' %}selected{% endif %}>Khác</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Ngày sinh</label>
+                                <input type="date" class="form-control" name="birthday" value="{{ user.profile.birthday|date:'Y-m-d'|default:'' }}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Công ty</label>
+                                <input type="text" class="form-control" name="company" value="{{ user.profile.company|default:'' }}">
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label">Địa chỉ</label>
+                                <input type="text" class="form-control" name="address" value="{{ user.profile.address|default:'' }}">
+                            </div>
+                            {% comment %} <div class="col-md-6 mb-3">
+                                <label class="form-label">Vị trí</label>
+                                <input type="text" class="form-control" name="location" value="{{ user.profile.location|default:'' }}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Website</label>
+                                <input type="url" class="form-control" name="url" value="{{ user.profile.url|default:'' }}">
+                            </div> {% endcomment %}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn edit-btn text-white">Lưu thay đổi</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <script>
+   // Avatar upload with AJAX - Phiên bản debug chi tiết
+        $('#avatarUpload').change(function() {
+            // Kiểm tra xem có file được chọn không
+            if (!this.files[0]) {
+                showNotification('Vui lòng chọn file!', 'warning');
+                return;
+            }
+            
+            var file = this.files[0];
+            console.log('File selected:', file.name, file.type, file.size);
+            
+            // Kiểm tra định dạng file
+            if (!file.type.match('image.*')) {
+                showNotification('Vui lòng chọn file ảnh!', 'warning');
+                return;
+            }
+            
+            // Kiểm tra kích thước file (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                showNotification('File ảnh không được vượt quá 5MB!', 'warning');
+                return;
+            }
+            
+            var formData = new FormData();
+            formData.append('avatar', file);
+            formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+            
+            // Log để kiểm tra
+            console.log('Sending AJAX request...');
+            console.log('URL:', '{% url "upload_avatar" %}');
+            
+            const uploadAvatarUrl = "{% url 'upload_avatar' %}";
+            $.ajax({
+                url: uploadAvatarUrl,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    console.log('Success response:', response);
+                    if (response.success) {
+                        $('#avatarPreview').attr('src', response.avatar_url + '?t=' + new Date().getTime());
+                        showNotification('Cập nhật avatar thành công!', 'success');
+                    } else {
+                        console.error('Response error:', response.message);
+                        showNotification(response.message || 'Có lỗi xảy ra!', 'danger');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Debug chi tiết lỗi
+                    console.error('=== AJAX ERROR DETAILS ===');
+                    console.error('Status:', status);
+                    console.error('Error:', error);
+                    console.error('XHR Object:', xhr);
+                    console.error('Response Text:', xhr.responseText);
+                    console.error('Status Code:', xhr.status);
+                    
+                    // Hiển thị thông báo lỗi chi tiết
+                    let errorMessage = 'Lỗi kết nối!';
+                    if (xhr.status === 403) {
+                        errorMessage = 'Lỗi CSRF token! Vui lòng refresh trang.';
+                    } else if (xhr.status === 404) {
+                        errorMessage = 'Không tìm thấy URL upload!';
+                    } else if (xhr.status === 500) {
+                        errorMessage = 'Lỗi server! Kiểm tra console Django.';
+                    } else if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMessage = xhr.responseJSON.message;
+                    }
+                    
+                    showNotification(errorMessage, 'danger');
+                }
+            });
+        });
+        // Form submission with AJAX
+        $('#profileForm').submit(function(e) {
+            e.preventDefault();
+            
+            console.log("=== EDIT PROFILE DEBUG ===");
+            console.log("Edit URL:", "{% url 'edit_profile' %}");
+            // Kiểm tra form action
+            var formAction = $('#profileForm').attr('action');
+            var formData = $(this).serialize();
+            console.log("Form action:", formAction);
+            $.ajax({
+                url: $(this).attr('action'),
+                type: 'POST',
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        $('#editProfileModal').modal('hide');
+                        location.reload();
+                    } else {
+                        showNotification(response.message || 'Có lỗi xảy ra!', 'danger');
+                    }
+                },
+                error: function() {
+                    showNotification('Có lỗi xảy ra!', 'danger');
+                }
+            });
+        });
+        
+        // Notification function
+        function showNotification(message, type) {
+            var alertHtml = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'} me-2"></i>
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+            $('.profile-container').prepend(alertHtml);
+            setTimeout(function() {
+                $('.alert').fadeOut('slow');
+            }, 3000);
+        }
+        
+        // Tooltip initialization
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+    </script>
+{% endblock %}
