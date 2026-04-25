@@ -43,13 +43,13 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     # allauth
     "allauth.account.middleware.AccountMiddleware",
 ]
@@ -65,6 +65,13 @@ AUTHENTICATION_BACKENDS = [
 SITE_ID = 1
 SITE_NAME = "vppgiaothon.com"
 # ------Cấu hình login, logout
+
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "SCOPE": ["profile", "email"],
+        "AUTH_PARAMS": {"access_type": "online"},
+    }
+}
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 SOCIALACCOUNT_LOGIN_ON_GET = True  # Chạy ngay sang trang login with Google luôn
@@ -72,16 +79,23 @@ ACCOUNT_LOGOUT_ON_GET = (
     True  # Tự động logout khi nhấn logout không qua template logout.html
 )
 
-# --- Cấu hình Allauth chi tiết ---
+
+# # Model không có trường username
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+
+# Login with email, pass and signup
 ACCOUNT_LOGIN_METHODS = {"email"}
 ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
-# Model không có trường username
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-# Yêu cầu Email là duy nhất
-ACCOUNT_UNIQUE_EMAIL = True
-# 'mandatory' nếu muốn bắt buộc verify email 'None' # Nếu bạn muốn bỏ qua bước xác nhận qua email khi test
-ACCOUNT_EMAIL_VERIFICATION = "optional"
-ACCOUNT_USER_MODEL_EMAIL_FIELD = "email"
+
+SOCIALACCOUNT_EMAIL_AUTHENTICATION = True
+SOCIALACCOUNT_EMAIL_VERIFICATION = "optional"  # Hoặc "optional"
+SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
+SOCIALACCOUNT_QUERY_EMAIL = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
+SOCIALACCOUNT_ALLOW_REGISTRATION = True
+
+SOCIALACCOUNT_ADAPTER = "accounts.adapters.CustomSocialAccountAdapter"
+
 # Tạo server ảo để xác nhận mail do chọn "optional" or "mandatory"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
@@ -142,7 +156,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Ho_Chi_Minh"
 
 USE_I18N = True
 

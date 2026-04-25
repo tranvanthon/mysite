@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load socialaccount %}
 {% block title %}
   Đăng nhập | GTBook
 {% endblock %}
@@ -29,14 +30,14 @@
       <button class="btn mt-3">{{ title }}</button>
     </form>
     <div class="text-center fs-6">
-      <a href="{% url 'account_reset_password' %}">Forget password?</a> or <a href="{% url 'account_signup' %}">Register</a>
+      <a href="{% url 'password_reset' %}">Forget password?</a> or <a href="{% url 'account_signup' %}">Register</a>
     </div>
     <div class="login-with">
       <p class="mt-5 text-center">Hoặc đăng nhập với</p>
     </div>
     <div class="d-flex justify-content-between mt-5">
       <div class="social google">
-        <img src="{% static 'images/logo/google.png' %}" alt="google" />
+        <a href="{% provider_login_url 'google' %}"><img src="{% static 'images/logo/google.png' %}" alt="google" /></a>
       </div>
       <div class="social facebook">
         <img src="{% static 'images/logo/facebook.png' %}" alt="facebook" />

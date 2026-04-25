@@ -88,6 +88,7 @@ class SignupForm(UserCreationForm):
             user.save()
         return user
 
+
 class LoginForm(AuthenticationForm):
 
     def __init__(self, *args, **kwargs):

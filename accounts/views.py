@@ -145,7 +145,7 @@ class LoginCustomView(LoginView):
 def logout_view(request):
     logout(request)
     messages.success(request, "Logout success!!!!!!")
-    return redirect("home")
+    return redirect("store:home")
 
 
 class SignupView(CreateView):
@@ -180,4 +180,8 @@ def customer_dashboard(request):
 
 class CustomPasswordResetView(PasswordResetView):
     form_class = CustomPasswordResetForm
-    template_name = "account/password_reset_form.html"
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['title'] =
+    #     return context

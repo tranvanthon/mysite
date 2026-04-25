@@ -86,7 +86,7 @@ class Profile(models.Model):
         ("O", "Khác"),
     ]
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="profile"
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="profile"
     )
     avatar = models.ImageField(upload_to=get_upload_path, null=True, blank=True)
     address = models.CharField(max_length=255, blank=True, null=True)
