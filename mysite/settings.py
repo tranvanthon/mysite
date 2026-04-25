@@ -82,8 +82,8 @@ ACCOUNT_UNIQUE_EMAIL = True
 # 'mandatory' nếu muốn bắt buộc verify email 'None' # Nếu bạn muốn bỏ qua bước xác nhận qua email khi test
 ACCOUNT_EMAIL_VERIFICATION = "optional"
 ACCOUNT_USER_MODEL_EMAIL_FIELD = "email"
-#Tạo server ảo để xác nhận mail do chọn "optional" or "mandatory"
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# Tạo server ảo để xác nhận mail do chọn "optional" or "mandatory"
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # end allauth
 

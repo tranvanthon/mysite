@@ -1,52 +1,51 @@
 {% extends 'base.html' %}
-{% load i18n %}
-{% load account %}
-
+{% load static %}
 {% block title %}
   Đăng nhập | GTBook
 {% endblock %}
 
 {% block content %}
-  <div class="card auth-card">
-    <div class="card-body p-4">
-      <h3 class="text-center mb-4">Đăng nhập</h3>
+  <div class="wrapper wow fadeInLeft" data-wow-delay="0.1s">
+    <div class="title">{{ title }}</div>
+    <form class="p-3 mt-3" action="." method="post" autocomplete="off">
+      {% csrf_token %}
 
-      <form class="login" method="POST" action="{% url 'account_login' %}">
-        {% csrf_token %}
-
-        {% if form.errors %}
-          <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>Messages!</strong> Email hoặc mật khẩu không đúng.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        {% endif %}
-
-        <div class="mb-3">
-          <label for="id_login" class="form-label">Email</label>
-          <input type="email" name="login" class="form-control" placeholder="name@example.com" required id="id_login" />
+      {% if form.errors %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <strong>Messages!</strong> Email hoặc mật khẩu không đúng.
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
+      {% endif %}
 
-        <div class="mb-3">
-          <label for="id_password" class="form-label">Mật khẩu</label>
-          <input type="password" name="password" class="form-control" placeholder="********" required id="id_password" />
-        </div>
-
-        <div class="form-check mb-3">
-          <input type="checkbox" name="remember" class="form-check-input" id="id_remember" />
-          <label class="form-check-label" for="id_remember">Ghi nhớ đăng nhập</label>
-        </div>
-
-        <div class="d-grid gap-2">
-          <button class="btn btn-primary btn-lg" type="submit">Đăng nhập</button>
-        </div>
-      </form>
-
-      <div class="mt-3 text-center">
-        <a href="{% url 'account_reset_password' %}" class="text-decoration-none">Quên mật khẩu?</a>
-        <hr />
-        <p class="mb-0">
-          Chưa có tài khoản? <a href="{% url 'account_signup' %}" class="text-decoration-none">Đăng ký ngay</a>
-        </p>
+      <div class="form-field d-flex align-items-center">
+        <span class="bi bi-person me-2 fs-3"></span>
+        {{ form.username }}
+      </div>
+      <div class="form-field d-flex align-items-center">
+        <span class="bi bi-key-fill fs-3 ms-2"></span>
+        {{ form.password }}
+        <span class="eye"><span class="bi bi-eye toggle-password me-3 fs-3" data-target="id_password"></span></span>
+      </div>
+      <button class="btn mt-3">{{ title }}</button>
+    </form>
+    <div class="text-center fs-6">
+      <a href="{% url 'account_reset_password' %}">Forget password?</a> or <a href="{% url 'account_signup' %}">Register</a>
+    </div>
+    <div class="login-with">
+      <p class="mt-5 text-center">Hoặc đăng nhập với</p>
+    </div>
+    <div class="d-flex justify-content-between mt-5">
+      <div class="social google">
+        <img src="{% static 'images/logo/google.png' %}" alt="google" />
+      </div>
+      <div class="social facebook">
+        <img src="{% static 'images/logo/facebook.png' %}" alt="facebook" />
+      </div>
+      <div class="social twiter">
+        <img src="https://www.freepnglogos.com/uploads/twitter-logo-png/twitter-bird-symbols-png-logo-0.png" alt="twiter" />
+      </div>
+      <div class="social apple">
+        <img src="{% static 'images/logo/apple.png' %}" alt="apple" />
       </div>
     </div>
   </div>

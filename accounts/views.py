@@ -1,4 +1,15 @@
-from django.shortcuts import render
+from django.views.generic import UpdateView, DetailView, CreateView
+
+from accounts.forms import (
+    CustomPasswordResetForm,
+    LoginForm,
+    SignupForm,
+    CustomPasswordChangeForm,
+)
+from django.urls import reverse_lazy
+
+from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordResetView
+from django.shortcuts import render, redirect
 from accounts.models import Profile
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
@@ -6,6 +17,7 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 import traceback
 from datetime import datetime
+from django.contrib.auth import logout
 
 
 @login_required
@@ -111,6 +123,46 @@ def upload_avatar(request):
         )
 
 
+class LoginCustomView(LoginView):
+    template_name = "account/login.html"
+    authentication_form = LoginForm
+
+    def get_success_url(self):
+        return reverse_lazy("store:home")
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect("store:home")
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Login"
+        return context
+
+
+@login_required
+def logout_view(request):
+    logout(request)
+    messages.success(request, "Logout success!!!!!!")
+    return redirect("home")
+
+
+class SignupView(CreateView):
+    form_class = SignupForm
+    template_name = "account/signup.html"
+    success_url = reverse_lazy("account_login")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Đăng ký tài khoản"
+        return context
+
+    def form_valid(self, form):
+        messages.success(self.request, "Account registration successful!")
+        return super().form_valid(form)
+
+
 @login_required
 def admin_dashboard(request):
     return HttpResponse("Chào quản trị viên!")
@@ -124,3 +176,8 @@ def staff_dashboard(request):
 @login_required
 def customer_dashboard(request):
     return HttpResponse("Chào khách hàng!")
+
+
+class CustomPasswordResetView(PasswordResetView):
+    form_class = CustomPasswordResetForm
+    template_name = "account/password_reset_form.html"
