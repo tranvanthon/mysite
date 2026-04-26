@@ -14,8 +14,11 @@
     <link rel="icon" href="{% static 'images/logo/logo.ico' %}" type="image/x-icon" />
     {% load bootstrap5 %}
     {% bootstrap_css %}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" />
+    {% comment %} <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" /> {% endcomment %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
     <link rel="stylesheet" href="{% static 'css/account.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
   </head>
   <body>
@@ -44,6 +47,7 @@
     <!-- scripts -->
     {% bootstrap_javascript %}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'js/profile.js' %}"></script>
     <script src="{% static 'js/password.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
   </body>

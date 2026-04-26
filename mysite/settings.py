@@ -95,8 +95,18 @@ SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
 SOCIALACCOUNT_ALLOW_REGISTRATION = True
 
 SOCIALACCOUNT_ADAPTER = "accounts.adapters.CustomSocialAccountAdapter"
+# #Mail Hot cho dev gia lap mt that
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# Email_HOT = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+# EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+# DEFAULT_FROM_EMAIL = 'tranvnathon@gmail.com'
 
-# Tạo server ảo để xác nhận mail do chọn "optional" or "mandatory"
+
+
+# Tạo server ảo để xác nhận email trong Terminal do chọn "optional" or "mandatory"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # end allauth

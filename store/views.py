@@ -15,18 +15,6 @@ class HomeView(TemplateView):
         return context
     
 
-
-class StaffDashboardView(TemplateView):
-
-    template_name = "dashboard/staff_dashboarb.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["title"] = "Dashboarf of the staff"
-        context["categories"] = Category.objects.filter(parent__isnull=True)
-        return context
-
-
 # Quản lý hàng hoá
 class CategoryUpdateView(LoginRequiredMixin, UpdateView):
     model = Category

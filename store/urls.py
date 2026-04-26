@@ -5,7 +5,6 @@ app_name = "store"
 
 urlpatterns = [
     path("", views.HomeView.as_view(), name="home"),
-    path("dashboard/", views.StaffDashboardView.as_view(), name="dashboard"),
     # Url Category
     path("category/", views.CategoryListView.as_view(), name="category_list"),
     path(
